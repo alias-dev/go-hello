@@ -5,7 +5,10 @@ stages:
 
 build artifacts:
   stage: build
-  script: make build
+  before_script:
+    - apk add --update make
+  script:
+    - make build
   artifacts:
     paths:
       - bin/
