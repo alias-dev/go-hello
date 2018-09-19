@@ -4,7 +4,6 @@ stages:
 build artifacts:
   stage: build
   script: make build
-
-artifacts:
-  paths:
-    - bin
+  artifacts:
+    paths:
+      - bin/
