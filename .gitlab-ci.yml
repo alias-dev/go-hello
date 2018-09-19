@@ -1,0 +1,10 @@
+stages:
+  - build
+
+build artifacts:
+  stage: build
+  script: make build
+
+artifacts:
+  paths:
+    - bin
