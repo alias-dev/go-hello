@@ -1,15 +1,11 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
-	"os"
-)
-
-const (
-	defaultPort     = "8080"
-	defaultGreeting = "Hello, World!"
 )
 
 type templateData struct {
@@ -23,19 +19,14 @@ func greetingHandler(greeting string, t *template.Template) func(http.ResponseWr
 }
 
 func main() {
-	port := os.Getenv("PORT")
-	greeting := os.Getenv("GREETING")
-
-	if port == "" {
-		port = defaultPort
-	}
-
-	if greeting == "" {
-		greeting = defaultGreeting
-	}
-
+	var message string
+	var port int
+	flag.StringVar(&message, "m", "Hello, Go!", "A friendly greeting")
+	flag.IntVar(&port, "p", 80, "Bind port")
+	flag.Parse()
+	log.Printf("p: %v, m: %v", port, message)
 	tmpl := template.Must(template.ParseFiles("greeting.tmpl.html"))
 
-	http.HandleFunc("/", greetingHandler(greeting, tmpl))
-	log.Fatal(http.ListenAndServe("0.0.0.0:"+port, nil))
+	http.HandleFunc("/", greetingHandler(message, tmpl))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf("0.0.0.0:%d", port), nil))
 }
